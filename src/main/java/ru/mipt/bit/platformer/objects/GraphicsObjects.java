@@ -10,9 +10,9 @@ public class GraphicsObjects {
     private static Batch batch;
     private static Tree tree;
 
-    public GraphicsObjects(Batch batch,Tree tree) {
-        this.batch = batch;
+    public GraphicsObjects(Tree tree,Batch batch) {
         this.tree = tree;
+        this.batch = batch;
     }
 
     // Texture decodes an image file and loads it into GPU memory, it represents a native resource
@@ -28,4 +28,7 @@ public class GraphicsObjects {
         drawTextureRegionUnscaled(batch, obstacle, tree.getObstacleRectangle(), 0f);
     }
 
+    public static Tree getTree() {
+        return tree;
+    }
 }
