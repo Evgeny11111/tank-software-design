@@ -27,53 +27,46 @@ public class Render {
 
     private final Batch batch;
     private final MapRenderer levelRenderer;
-    private final TileMovement tileMovement;
-    private final TiledMapTileLayer groundLayer;
-    private final Player player;
-    private final Tree tree;
     private GraphicsPlayer graphicsPlayer;
     private GraphicsObjects graphicsTree;
 
 
-    public Render(Batch batch, MapRenderer levelRenderer, TileMovement tileMovement, TiledMapTileLayer groundLayer, Player player, Tree tree) {
+    public Render(Batch batch, MapRenderer levelRenderer, GraphicsPlayer graphicsPlayer, GraphicsObjects graphicsTree) {
         this.batch = batch;
         this.levelRenderer = levelRenderer;
-        this.tileMovement = tileMovement;
-        this.groundLayer = groundLayer;
-        this.player = player;
-        this.tree = tree;
+        this.graphicsPlayer = graphicsPlayer;
+        this.graphicsTree = graphicsTree;
     }
 
     public void doRender(){
-        graphicsPlayer = new GraphicsPlayer(player,batch,tileMovement);
-        graphicsTree = new GraphicsObjects(batch,tree);
+
         // clear the screen
         Gdx.gl.glClearColor(0f, 0f, 0.2f, 1f);
         Gdx.gl.glClear(GL_COLOR_BUFFER_BIT);
 
 
         // get time passed since the last render
-        float deltaTime = player.getDeltaTime();
+        float deltaTime = graphicsPlayer.getTank().getDeltaTime();
 
 
-        if (isEqual(player.getMovementProgress(), 1f)) {
+        if (isEqual(graphicsPlayer.getTank().getMovementProgress(), 1f)) {
                 Movement.movementKey(Gdx.input);
-                if (!tree.getObstacleCoordinates().equals(NewDestination.newCoordinates())) {
+                if (!graphicsTree.getTree().getObstacleCoordinates().equals(NewDestination.newCoordinates())) {
                     NewDestination.setDestinationCoordinates(NewDestination.newCoordinates());
-                    player.setMovementProgress(0f);
+                    graphicsPlayer.getTank().setMovementProgress(0f);
                     Movement.setCurrMovementVector(new GridPoint2(0,0));
                 }
-                player.setRotation(Movement.getCurrRotation());
+                graphicsPlayer.getTank().setRotation(Movement.getCurrRotation());
             }
 
 
         // calculate interpolated player screen coordinates
         GraphicsPlayer.CalcInterpPlayerCoordinate();
 
-        player.setMovementProgress(continueProgress(player.getMovementProgress(), deltaTime, MOVEMENT_SPEED));
-        if (isEqual(player.getMovementProgress(), 1f)) {
+        graphicsPlayer.getTank().setMovementProgress(continueProgress(graphicsPlayer.getTank().getMovementProgress(), deltaTime, MOVEMENT_SPEED));
+        if (isEqual(graphicsPlayer.getTank().getMovementProgress(), 1f)) {
             // record that the player has reached his/her destination
-            player.setCoordinates(NewDestination.getDestinationCoordinates());
+            graphicsPlayer.getTank().setCoordinates(NewDestination.getDestinationCoordinates());
         }
 
         // render each tile of the level
