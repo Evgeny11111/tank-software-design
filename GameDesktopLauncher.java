@@ -7,19 +7,16 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
 public class GameDesktopLauncher implements ApplicationListener {
 
-    private Create create;
-    private Render render;
-
     @Override
     public void create() {
-        create = new Create();
-        create.doCreate();
+        Creater creater = new Creater();
+        creater.doCreate();
     }
 
     @Override
     public void render() {
-        render = new Render(create.getBatch(), create.getLevelRenderer(), create.getGraphicsPlayer(),create.getGraphicsTree());
-        render.doRender();
+        Renderer renderer = new Renderer();
+        renderer.doRender();
     }
 
     @Override
