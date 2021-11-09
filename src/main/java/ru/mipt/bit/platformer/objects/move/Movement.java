@@ -25,7 +25,7 @@ public class Movement {
         return rotation;
     }
 
-    public boolean isNull(){
+    public boolean vectorIsNull(){
         return (directionVector.x == 0 && directionVector.y == 0);
     }
 }

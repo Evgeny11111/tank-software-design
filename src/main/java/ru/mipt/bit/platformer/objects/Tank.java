@@ -40,7 +40,7 @@ public class Tank {
     }
 
     private GridPoint2 tryMovement() {
-        if (nextMove.isNull())
+        if (nextMove.vectorIsNull())
             return destinationCoordinates;
 
         GridPoint2 newCoordinates = new GridPoint2();
@@ -101,7 +101,7 @@ public class Tank {
     }
 
     public void move() {
-        if (!nextMove.isNull() && hasFinishedMovement()) {
+        if (!nextMove.vectorIsNull() && hasFinishedMovement()) {
             makeRotation();
             makeMovement();
             finishMovement();
