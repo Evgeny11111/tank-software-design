@@ -6,11 +6,9 @@ import ru.mipt.bit.platformer.objects.graphics.GraphicsTree;
 
 
 public class Tree {
-    private final GraphicsTree graphicsTree;
     private final GridPoint2 coordinates;
 
-    public Tree(Texture texture, GridPoint2 gridPoint2){
-        graphicsTree = new GraphicsTree(texture);
+    public Tree(GridPoint2 gridPoint2){
         coordinates = gridPoint2;
     }
 
@@ -19,8 +17,5 @@ public class Tree {
     }
 
 
-    public GraphicsTree getGraphicsTree() {
-        return graphicsTree;
-    }
 
 }

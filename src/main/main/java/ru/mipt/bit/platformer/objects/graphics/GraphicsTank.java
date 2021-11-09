@@ -28,4 +28,8 @@ public class GraphicsTank {
     public Texture getBlueTank() {
         return blueTank;
     }
+
+    public void dispose() {
+        blueTank.dispose();
+    }
 }
