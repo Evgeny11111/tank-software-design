@@ -21,14 +21,14 @@ public class Creator {
         this.trees = trees;
         this.tanks = tanks;
     }
-    public GameState createGameState(int levelWidth, int levelHeight) {
+    public GameState createGameState(int width, int height) {
         GameState.GameStateBuilder gameStateBuilder = new GameState.GameStateBuilder();
         return gameStateBuilder
                 .obstacles(getObstacles())
                 .bots(getBots())
                 .player(getPlayer())
-                .levelWidth(levelWidth)
-                .levelHeight(levelHeight)
+                .levelWidth(width)
+                .levelHeight(height)
                 .build();
     }
     Player getPlayer() {
