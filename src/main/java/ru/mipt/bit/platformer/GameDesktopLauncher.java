@@ -8,7 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Interpolation;
 import org.awesome.ai.strategy.NotRecommendingAI;
-import ru.mipt.bit.platformer.driver.Driver;
+import ru.mipt.bit.platformer.driver.DriverByGame;
 import ru.mipt.bit.platformer.driver.Level;
 import ru.mipt.bit.platformer.objects.Bullet;
 import ru.mipt.bit.platformer.generators.ReaderFromFile;
@@ -35,7 +35,7 @@ public class GameDesktopLauncher implements ApplicationListener {
     private ArrayList<Tree> trees;
     private ArrayList<Bullet> bullets;
 
-    private Driver driver;
+    private DriverByGame driverByGame;
     private Level level;
 
 
@@ -67,8 +67,8 @@ public class GameDesktopLauncher implements ApplicationListener {
         levelRenderer = new LevelRenderer(levelTiledMap, groundLayer, playerTank, trees, tanks);
         tileMovement = new TileMovement(groundLayer, Interpolation.smooth);
 
-        driver = new Driver(playerTank, trees, tanks, bullets, level, new NotRecommendingAI(), levelRenderer);
-        level.subscribe(driver);
+        driverByGame = new DriverByGame(playerTank, trees, tanks, bullets, level, new NotRecommendingAI(), levelRenderer);
+        level.subscribe(driverByGame);
         level.subscribe(levelRenderer);
         level.subscribe(playerTank.getCollisionChecker());
 
@@ -77,9 +77,9 @@ public class GameDesktopLauncher implements ApplicationListener {
 
     @Override
     public void render() {
-        float deltaTime = driver.getDeltaTime();
-        driver.generateCommands();
-        driver.executeCommands();
+        float deltaTime = driverByGame.getDeltaTime();
+        driverByGame.generateCommands();
+        driverByGame.executeCommands();
         level.updateObjects(deltaTime);
         levelRenderer.render();
     }
