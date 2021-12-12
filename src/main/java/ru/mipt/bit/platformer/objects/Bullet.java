@@ -12,7 +12,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 /**
  * Entity
  */
-public class Bullet implements ObjectByGame{
+public class Bullet{
     private final float MOVEMENT_SPEED = 0.6f;
     public final float damage = 25;
     private GridPoint2 coordinates;

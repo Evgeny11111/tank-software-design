@@ -5,7 +5,6 @@ import org.awesome.ai.AI;
 import ru.mipt.bit.platformer.AI.AIController;
 import ru.mipt.bit.platformer.LevelRenderer;
 import ru.mipt.bit.platformer.objects.Bullet;
-import ru.mipt.bit.platformer.objects.ObjectByGame;
 import ru.mipt.bit.platformer.control.commands.Command;
 import ru.mipt.bit.platformer.control.ControlBots;
 import ru.mipt.bit.platformer.control.ControlPlayer;
@@ -75,7 +74,7 @@ public class DriverByGame implements Observer {
     }
 
     @Override
-    public void update(Event event, ObjectByGame objectByGame) {
+    public void update(Event event, Object objectByGame) {
         if (event == Event.RemoveTank) {
             tanks.remove((Tank) objectByGame);
         }

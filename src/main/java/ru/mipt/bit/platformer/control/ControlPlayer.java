@@ -5,7 +5,6 @@ import ru.mipt.bit.platformer.Issuer;
 import ru.mipt.bit.platformer.Observer;
 import ru.mipt.bit.platformer.driver.Level;
 import ru.mipt.bit.platformer.objects.Event;
-import ru.mipt.bit.platformer.objects.ObjectByGame;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.control.commands.*;
 
@@ -59,7 +58,7 @@ public class ControlPlayer implements Issuer {
     }
 
     @Override
-    public void notifySubs(Event event, ObjectByGame objectByGame) {
+    public void notifySubs(Event event, Object objectByGame) {
         for (Observer obs : observers)
             obs.update(event, objectByGame);
     }

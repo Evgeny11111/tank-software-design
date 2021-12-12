@@ -2,7 +2,6 @@ package ru.mipt.bit.platformer.driver;
 
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.objects.Bullet;
-import ru.mipt.bit.platformer.objects.ObjectByGame;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.objects.Tree;
 import ru.mipt.bit.platformer.objects.Event;
@@ -114,8 +113,7 @@ public class CollisionChecker implements Observer {
         return (x >= 0 && x < width && y >= 0 && y < height);
     }
 
-    @Override
-    public void update(Event event, ObjectByGame objectByGame) {
+    public void update(Event event, Object objectByGame) {
         switch(event) {
             case RemoveTank:
                 tanks.remove((Tank) objectByGame);

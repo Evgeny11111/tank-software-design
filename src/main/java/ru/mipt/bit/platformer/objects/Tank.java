@@ -18,7 +18,7 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 /**
  * Entity
  */
-public class Tank implements ObjectByGame{
+public class Tank{
     private float movementSpeed = 0.4f;
 
     // player current position coordinates on level 10x8 grid (e.g. x=0, y=1)

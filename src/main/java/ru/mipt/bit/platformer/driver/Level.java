@@ -1,7 +1,6 @@
 package ru.mipt.bit.platformer.driver;
 
 import ru.mipt.bit.platformer.objects.Bullet;
-import ru.mipt.bit.platformer.objects.ObjectByGame;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.objects.Tree;
 import ru.mipt.bit.platformer.objects.Event;
@@ -114,7 +113,7 @@ public class Level implements Issuer {
     }
 
     @Override
-    public void notifySubs(Event event, ObjectByGame objectByGame) {
+    public void notifySubs(Event event, Object objectByGame) {
         for (Observer sub : observers)
             sub.update(event, objectByGame);
     }

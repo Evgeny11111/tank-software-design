@@ -148,7 +148,7 @@ public class LevelRenderer implements Observer {
     }
 
     @Override
-    public void update(Event event, ObjectByGame objectByGame) {
+    public void update(Event event, Object objectByGame) {
         switch(event) {
             case AddBullet:
                 bulletsToGraphics.put((Bullet) objectByGame, new GraphicsBullet(bulletTexture, tileMovement));
