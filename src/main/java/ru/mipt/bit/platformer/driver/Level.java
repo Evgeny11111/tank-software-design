@@ -5,10 +5,12 @@ import ru.mipt.bit.platformer.objects.ObjectByGame;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.objects.Tree;
 import ru.mipt.bit.platformer.objects.Event;
+import ru.mipt.bit.platformer.Issuer;
+import ru.mipt.bit.platformer.Observer;
 
 import java.util.ArrayList;
 
-public class Level {
+public class Level implements Issuer {
     private final int width = 10;
     private final int height = 8;
 
@@ -17,14 +19,14 @@ public class Level {
     private final ArrayList<Tree> trees;
     private final ArrayList<Bullet> bullets;
 
-    private final ArrayList<Subscriber> subscribers;
+    private final ArrayList<Observer> observers;
 
     public Level(Tank playerTank, ArrayList<Tree> trees, ArrayList<Tank> tanks) {
         this.playerTank = playerTank;
         this.trees = trees;
         this.tanks = tanks;
         this.bullets = new ArrayList<>();
-        subscribers = new ArrayList<>();
+        observers = new ArrayList<>();
     }
 
     public void updateObjects(float deltaTime) {
@@ -103,19 +105,19 @@ public class Level {
         return bullets;
     }
 
-
-    public void subscribe(Subscriber subscriber) {
-        subscribers.add(subscriber);
+    @Override
+    public void subscribe(Observer observer) {
+        observers.add(observer);
     }
 
-
-    public void unsubscribe(Subscriber subscriber) {
-        subscribers.remove(subscriber);
+    @Override
+    public void unsubscribe(Observer observer) {
+        observers.remove(observer);
     }
 
-
+    @Override
     public void notifySubs(Event event, ObjectByGame objectByGame) {
-        for (Subscriber sub : subscribers)
+        for (Observer sub : observers)
             sub.update(event, objectByGame);
     }
 }

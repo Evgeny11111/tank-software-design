@@ -3,7 +3,7 @@ package ru.mipt.bit.platformer.AI;
 import org.awesome.ai.Action;
 import org.awesome.ai.Recommendation;
 import ru.mipt.bit.platformer.objects.Tank;
-import ru.mipt.bit.platformer.objects.control.commands.*;
+import ru.mipt.bit.platformer.control.commands.*;
 
 public class RecommendCommand {
     Command getCommand(Recommendation recommendation) {

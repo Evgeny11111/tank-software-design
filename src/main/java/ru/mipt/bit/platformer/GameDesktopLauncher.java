@@ -11,13 +11,12 @@ import org.awesome.ai.strategy.NotRecommendingAI;
 import ru.mipt.bit.platformer.driver.Driver;
 import ru.mipt.bit.platformer.driver.Level;
 import ru.mipt.bit.platformer.objects.Bullet;
-import ru.mipt.bit.platformer.objects.generators.ReaderFromFile;
-import ru.mipt.bit.platformer.objects.generators.ObjectsGenerator;
+import ru.mipt.bit.platformer.generators.ReaderFromFile;
+import ru.mipt.bit.platformer.generators.ObjectsGenerator;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.objects.Tree;
 import ru.mipt.bit.platformer.util.TileMovement;
 
-import java.io.FileReader;
 import java.util.ArrayList;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
@@ -63,10 +62,10 @@ public class GameDesktopLauncher implements ApplicationListener {
 
         levelTiledMap = new TmxMapLoader().load("level.tmx");
         TiledMapTileLayer groundLayer = getSingleLayer(levelTiledMap);
-        levelRenderer = new LevelRenderer(levelTiledMap, groundLayer, playerTank, trees, tanks, bullets);
+        levelRenderer = new LevelRenderer(levelTiledMap, groundLayer, playerTank, trees, tanks);
         tileMovement = new TileMovement(groundLayer, Interpolation.smooth);
 
-        driver = new Driver(playerTank, trees, tanks, bullets, level, new NotRecommendingAI());
+        driver = new Driver(playerTank, trees, tanks, bullets, level, new NotRecommendingAI(), levelRenderer);
         level.subscribe(driver);
         level.subscribe(levelRenderer);
         level.subscribe(playerTank.getCollisionChecker());

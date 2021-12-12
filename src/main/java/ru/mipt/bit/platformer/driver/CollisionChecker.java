@@ -6,11 +6,12 @@ import ru.mipt.bit.platformer.objects.ObjectByGame;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.objects.Tree;
 import ru.mipt.bit.platformer.objects.Event;
+import ru.mipt.bit.platformer.Observer;
 
 
 import java.util.ArrayList;
 
-public class CollisionChecker implements Subscriber {
+public class CollisionChecker implements Observer {
 
     private final int width = 10;
     private final int height = 8;
@@ -40,7 +41,6 @@ public class CollisionChecker implements Subscriber {
     public boolean checkCollisionsWithBullet(GridPoint2 newPosition, Bullet bullet) {
         if (!checkBounds(newPosition)) {
             bullet.setNotExistent();
-            //bullets.remove(bullet);
             return false;
         }
 
@@ -67,10 +67,7 @@ public class CollisionChecker implements Subscriber {
         for (var tank : tanks) {
             if (!tank.equals(bullet.getTank()) && (!bullet.isMovementPossible(tank.getCoordinates(), newPosition) || !bullet.isMovementPossible(tank.getDestinationCoordinates(), newPosition)) ) {
                 bullet.setNotExistent();
-                //bullets.remove(bullet);
                 tank.takeDamage(bullet);
-                //if (!tank.isAlive())
-                //tanks.remove(tank);
                 return false;
             }
         }

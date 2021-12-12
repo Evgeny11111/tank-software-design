@@ -2,7 +2,7 @@ package ru.mipt.bit.platformer.objects;
 
 import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.driver.CollisionChecker;
-import ru.mipt.bit.platformer.objects.control.Direction;
+import ru.mipt.bit.platformer.control.Direction;
 
 import java.util.Objects;
 

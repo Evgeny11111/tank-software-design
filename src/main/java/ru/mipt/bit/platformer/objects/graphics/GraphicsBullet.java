@@ -10,22 +10,18 @@ import ru.mipt.bit.platformer.util.TileMovement;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.drawTextureRegionUnscaled;
 
-public class GraphicsTank implements GraphicsObject{
+public class GraphicsBullet implements GraphicsObject {
     private final TextureRegion graphics;
     private final Rectangle rectangle;
     private final TileMovement tileMovement;
 
-    public GraphicsTank(Texture blueTankTexture, TileMovement tileMovement) {
-        this.graphics = new TextureRegion(blueTankTexture);
+    public GraphicsBullet(Texture bulletTexture, TileMovement tileMovement) {
+        this.graphics = new TextureRegion(bulletTexture);
         this.rectangle = createBoundingRectangle(this.graphics);
         this.tileMovement = tileMovement;
     }
 
 
-    @Override
-    public void render(Batch batch, float rotation) {
-        drawTextureRegionUnscaled(batch, this.graphics, this.rectangle, rotation);
-    }
 
     @Override
     public void moveBetweenTileCenters(GridPoint2 coordinates, GridPoint2 destinationCoordinates, float movementProgress) {
@@ -37,10 +33,8 @@ public class GraphicsTank implements GraphicsObject{
 
     }
 
-    public TextureRegion getGraphics() {
-        return this.graphics;
-    }
-    public Rectangle getRectangle() {
-        return this.rectangle;
+    @Override
+    public void render(Batch batch, float rotation) {
+        drawTextureRegionUnscaled(batch, this.graphics, this.rectangle, rotation);
     }
 }

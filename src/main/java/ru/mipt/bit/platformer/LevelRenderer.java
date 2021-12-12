@@ -8,15 +8,8 @@ import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Interpolation;
-import ru.mipt.bit.platformer.objects.Bullet;
-import ru.mipt.bit.platformer.objects.ObjectByGame;
-import ru.mipt.bit.platformer.objects.Tank;
-import ru.mipt.bit.platformer.objects.Tree;
-import ru.mipt.bit.platformer.objects.graphics.GraphicsObjectBullet;
-import ru.mipt.bit.platformer.objects.graphics.GraphicsTank;
-import ru.mipt.bit.platformer.objects.graphics.GraphicsTree;
-import ru.mipt.bit.platformer.objects.Event;
-import ru.mipt.bit.platformer.driver.Subscriber;
+import ru.mipt.bit.platformer.objects.*;
+import ru.mipt.bit.platformer.objects.graphics.*;
 import ru.mipt.bit.platformer.util.GdxGameUtils;
 import ru.mipt.bit.platformer.util.TileMovement;
 
@@ -26,7 +19,7 @@ import java.util.HashMap;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
-public class LevelRenderer implements Subscriber {
+public class LevelRenderer implements Observer {
     private final Batch batch;
     private final MapRenderer levelRenderer;
     private final TiledMapTileLayer groundLayer;
@@ -34,38 +27,39 @@ public class LevelRenderer implements Subscriber {
     private final Texture blueTankTexture;
     private final Texture greenTreeTexture;
     private final Texture bulletTexture;
-    private final GraphicsTank tankPlayerGraphics;
-    private final HashMap<Tank, GraphicsTank> tanksToGraphics;
+    private final Texture healthTexture;
+    private final GraphicsObject tankPlayerGraphics;
+    private final HashMap<Tank, GraphicsObject> tanksToGraphics;
     private final HashMap<Tree, GraphicsTree> treesToGraphics;
-    private final HashMap<Bullet, GraphicsObjectBullet> bulletsToGraphics;
+    private final HashMap<Bullet, GraphicsBullet> bulletsToGraphics;
 
     private final Tank playerTank;
-    private final ArrayList<Tree> trees;
-    private final ArrayList<Tank> tanks;
-    private final ArrayList<Bullet> bullets;
 
-    public LevelRenderer(TiledMap level, TiledMapTileLayer groundLayer, Tank playerTank,  ArrayList<Tree> trees, ArrayList<Tank> tanks, ArrayList<Bullet> bullets) {
+
+    public LevelRenderer(TiledMap level, TiledMapTileLayer groundLayer, Tank playerTank, ArrayList<Tree> treeObstacles, ArrayList<Tank> tanks) {
         this.batch = new SpriteBatch();
         this.levelRenderer = createSingleLayerMapRenderer(level, batch);
         this.groundLayer = groundLayer;
         this.tileMovement = new TileMovement(groundLayer, Interpolation.smooth);
 
         this.blueTankTexture = new Texture("images/tank_blue.png");
-        this.tankPlayerGraphics = new GraphicsTank(blueTankTexture, this.tileMovement);
         this.greenTreeTexture = new Texture("images/greenTree.png");
         this.bulletTexture = new Texture("images/bullet.png");
+        this.healthTexture = new Texture("images/health.png");
+
+        GraphicsTank tankGraphics = new GraphicsTank(blueTankTexture, this.tileMovement);
+        this.tankPlayerGraphics = new GraphicsHealth(tankGraphics, playerTank, healthTexture, this.tileMovement);
         this.treesToGraphics = new HashMap<>();
-        for (var tree : trees)
+        for (var tree : treeObstacles)
             treesToGraphics.put(tree, new GraphicsTree(greenTreeTexture, this.tileMovement));
         this.tanksToGraphics = new HashMap<>();
-        for (var tank : tanks)
-            tanksToGraphics.put(tank, new GraphicsTank(blueTankTexture, this.tileMovement));
+        for (var tank : tanks) {
+            tankGraphics = new GraphicsTank(blueTankTexture, this.tileMovement);
+            tanksToGraphics.put(tank, new GraphicsHealth(tankGraphics, tank, healthTexture, this.tileMovement));
+        }
         this.bulletsToGraphics = new HashMap<>();
 
         this.playerTank = playerTank;
-        this.trees = trees;
-        this.tanks = tanks;
-        this.bullets = bullets;
     }
 
     private TileMovement getTileMovement() {
@@ -154,22 +148,36 @@ public class LevelRenderer implements Subscriber {
     public void update(Event event, ObjectByGame objectByGame) {
         switch(event) {
             case AddBullet:
-                bulletsToGraphics.put((Bullet) objectByGame, new GraphicsObjectBullet(bulletTexture, tileMovement));
+                bulletsToGraphics.put((Bullet) objectByGame, new GraphicsBullet(bulletTexture, tileMovement));
                 break;
             case RemoveBullet:
+                System.out.println("before remove bullet " + bulletsToGraphics.entrySet().size());
+                Bullet removable = null;
                 for (var entry : bulletsToGraphics.entrySet()) {
                     if (entry.getKey() == objectByGame) {
-                        bulletsToGraphics.remove(entry.getKey(), entry.getValue());
+                        removable = entry.getKey();
+                        break;
+                    }
+                }
+                if (removable != null) {
+                    System.out.println("after remove bullet " + bulletsToGraphics.entrySet().size());
+                    bulletsToGraphics.remove(removable);
+                }
+                break;
+            case RemoveTank:
+                System.out.println("before remove tank " + tanksToGraphics.entrySet().size());
+                for (var entry : tanksToGraphics.entrySet()) {
+                    if (entry.getKey() == objectByGame) {
+                        tanksToGraphics.remove(entry.getKey(), entry.getValue());
+                        System.out.println("after remove tank " + tanksToGraphics.entrySet().size());
                         break;
                     }
                 }
                 break;
-            case RemoveTank:
+            case ChangeHealth:
+                tankPlayerGraphics.changeHealthBar();
                 for (var entry : tanksToGraphics.entrySet()) {
-                    if (entry.getKey() == objectByGame) {
-                        tanksToGraphics.remove(entry.getKey(), entry.getValue());
-                        break;
-                    }
+                    entry.getValue().changeHealthBar();
                 }
                 break;
         }
