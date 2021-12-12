@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Interpolation;
 import org.awesome.ai.strategy.NotRecommendingAI;
 import ru.mipt.bit.platformer.driver.DriverByGame;
 import ru.mipt.bit.platformer.driver.Level;
+import ru.mipt.bit.platformer.generators.LevelGenerator;
 import ru.mipt.bit.platformer.objects.Bullet;
 import ru.mipt.bit.platformer.generators.ReaderFromFile;
 import ru.mipt.bit.platformer.generators.ObjectsGenerator;
@@ -39,28 +40,16 @@ public class GameDesktopLauncher implements ApplicationListener {
     private Level level;
 
 
-    private void generateRandomLevel() {
-        ObjectsGenerator obstaclesGenerator = new ObjectsGenerator(3, 10);
-        level = obstaclesGenerator.generateLevel();
-        playerTank = level.getPlayerTank();
-        tanks = level.getTanks();
-        trees = level.getTreeObstacles();
-        bullets = level.getBullets();
-    }
-
-    private void getLevelFromFile() {
-        ReaderFromFile readerFromFile = new ReaderFromFile();
-        readerFromFile.getGameObjectsFromFile("src\\main\\resources\\startingSettings\\level.txt");
-        level = readerFromFile.generateLevel();
-        playerTank = level.getPlayerTank();
-        tanks = level.getTanks();
-        trees = level.getTreeObstacles();
-        bullets = level.getBullets();
-    }
 
     @Override
     public void create() {
-        getLevelFromFile();
+        LevelGenerator levelGenerator = new ReaderFromFile();
+        ((ReaderFromFile) levelGenerator).getGameObjectsFromFile("src\\main\\resources\\startingSettings\\level.txt");
+        level = levelGenerator.generateLevel();
+        playerTank = level.getPlayerTank();
+        tanks = level.getTanks();
+        trees = level.getTreeObstacles();
+        bullets = level.getBullets();
 
         levelTiledMap = new TmxMapLoader().load("level.tmx");
         TiledMapTileLayer groundLayer = getSingleLayer(levelTiledMap);
