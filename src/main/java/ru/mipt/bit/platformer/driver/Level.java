@@ -10,6 +10,9 @@ import ru.mipt.bit.platformer.Observer;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter
+ */
 public class Level implements Issuer {
     private final int width = 10;
     private final int height = 8;

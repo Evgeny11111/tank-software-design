@@ -2,6 +2,9 @@ package ru.mipt.bit.platformer.control.commands;
 
 import ru.mipt.bit.platformer.objects.Tank;
 
+/**
+ * Use case
+ */
 public class NoCommand implements Command {
     private final Tank tank;
 

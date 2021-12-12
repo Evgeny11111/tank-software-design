@@ -19,6 +19,9 @@ import java.util.HashMap;
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
+/**
+ * Adapter
+ */
 public class LevelRenderer implements Observer {
     private final Batch batch;
     private final MapRenderer levelRenderer;

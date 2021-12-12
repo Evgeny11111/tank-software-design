@@ -11,6 +11,9 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import java.util.*;
 
+/**
+ * Use case
+ */
 public class ObjectsGenerator implements LevelGenerator {
     private final ArrayList<Tree> trees;
     private final ArrayList<Tank> tanks;

@@ -10,6 +10,9 @@ import ru.mipt.bit.platformer.control.commands.Command;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Use case
+ */
 public class AIController {
     private final AI ai;
     private GameState gameState;

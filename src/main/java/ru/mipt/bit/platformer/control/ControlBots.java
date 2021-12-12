@@ -7,6 +7,9 @@ import ru.mipt.bit.platformer.control.commands.*;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Use case
+ */
 public class ControlBots {
     public Command getRandomCommand(Tank tank, Level level) {
         int num = ThreadLocalRandom.current().nextInt(0, 10000) % 299;

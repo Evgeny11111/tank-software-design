@@ -4,7 +4,9 @@ import com.badlogic.gdx.math.GridPoint2;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.control.Direction;
 
-
+/**
+ * Use case
+ */
 public class DownCommand implements Command {
 
     private final Tank tank;

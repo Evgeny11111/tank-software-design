@@ -5,6 +5,9 @@ import ru.mipt.bit.platformer.objects.Tank;
 
 import java.util.Date;
 
+/**
+ * Entity
+ */
 public class NoDamagedState implements State{
     private final Tank tank;
 

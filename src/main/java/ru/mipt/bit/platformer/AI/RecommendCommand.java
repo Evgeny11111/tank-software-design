@@ -5,6 +5,9 @@ import org.awesome.ai.Recommendation;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.control.commands.*;
 
+/**
+ * Adapter
+ */
 public class RecommendCommand {
     Command getCommand(Recommendation recommendation) {
         Tank actor = (Tank) recommendation.getActor().getSource();

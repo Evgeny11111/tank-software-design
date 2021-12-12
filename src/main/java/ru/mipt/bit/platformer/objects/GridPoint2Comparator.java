@@ -4,6 +4,9 @@ import com.badlogic.gdx.math.GridPoint2;
 
 import java.util.Comparator;
 
+/**
+ * Use case
+ */
 public class GridPoint2Comparator implements Comparator<GridPoint2> {
       @Override
     public int compare(GridPoint2 o1, GridPoint2 o2) {

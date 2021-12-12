@@ -3,6 +3,9 @@ package ru.mipt.bit.platformer.control;
 import java.util.HashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Entity
+ */
 public enum Direction {
     Up,
     Down,

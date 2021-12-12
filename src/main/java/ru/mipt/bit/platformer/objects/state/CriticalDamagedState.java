@@ -2,6 +2,9 @@ package ru.mipt.bit.platformer.objects.state;
 
 import ru.mipt.bit.platformer.objects.Tank;
 
+/**
+ * Entity
+ */
 public class CriticalDamagedState implements State {
     private final Tank tank;
 

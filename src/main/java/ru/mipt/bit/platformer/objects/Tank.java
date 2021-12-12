@@ -15,6 +15,9 @@ import java.util.Objects;
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
+/**
+ * Entity
+ */
 public class Tank implements ObjectByGame{
     private float movementSpeed = 0.4f;
 

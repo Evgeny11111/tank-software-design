@@ -10,6 +10,9 @@ import ru.mipt.bit.platformer.util.TileMovement;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.createBoundingRectangle;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.drawTextureRegionUnscaled;
 
+/**
+ * Use case
+ */
 public class GraphicsBullet implements GraphicsObject {
     private final TextureRegion graphics;
     private final Rectangle rectangle;

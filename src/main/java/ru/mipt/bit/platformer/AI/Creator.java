@@ -11,6 +11,9 @@ import ru.mipt.bit.platformer.objects.Tree;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter
+ */
 public class Creator {
     private final Tank playerTank;
     private final ArrayList<Tree> trees;

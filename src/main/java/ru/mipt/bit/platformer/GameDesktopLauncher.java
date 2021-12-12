@@ -21,6 +21,9 @@ import java.util.ArrayList;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
+/**
+ * Adapter
+ */
 public class GameDesktopLauncher implements ApplicationListener {
 
     private TiledMap levelTiledMap;

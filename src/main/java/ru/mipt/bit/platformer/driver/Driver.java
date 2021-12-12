@@ -16,6 +16,9 @@ import ru.mipt.bit.platformer.Observer;
 
 import java.util.ArrayList;
 
+/**
+ * Adapter
+ */
 public class Driver implements Observer {
     private final int width = 10;
     private final int height = 8;

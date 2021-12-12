@@ -9,6 +9,9 @@ import java.util.Date;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
+/**
+ * Use case
+ */
 public class ShootCommand implements Command {
 
     private final Tank tank;

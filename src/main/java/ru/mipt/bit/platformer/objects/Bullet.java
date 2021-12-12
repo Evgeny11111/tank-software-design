@@ -9,6 +9,9 @@ import java.util.Objects;
 import static com.badlogic.gdx.math.MathUtils.isEqual;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
+/**
+ * Entity
+ */
 public class Bullet implements ObjectByGame{
     private final float MOVEMENT_SPEED = 0.6f;
     public final float damage = 25;
