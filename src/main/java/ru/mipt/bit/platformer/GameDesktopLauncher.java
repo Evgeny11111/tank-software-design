@@ -60,7 +60,6 @@ public class GameDesktopLauncher implements ApplicationListener {
 
     @Override
     public void create() {
-        //generateRandomLevel();
         getLevelFromFile();
 
         levelTiledMap = new TmxMapLoader().load("level.tmx");

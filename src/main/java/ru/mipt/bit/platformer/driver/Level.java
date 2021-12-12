@@ -61,21 +61,16 @@ public class Level implements Issuer {
     }
 
     public void checkObjects() {
-        checkPlayer();
         checkTanks();
         checkBullets();
     }
 
-    public void checkPlayer() {
-        //if (!playerTank.isAlive())
-        //System.out.println("Player died!");
-    }
 
     public void checkTanks() {
         ArrayList <Tank> tanksCopy = new ArrayList<>(tanks);
         for (Tank tank : tanksCopy) {
             if (!tank.isAlive()) {
-                System.out.println("removing tank");
+                System.out.println("remove tank");
                 notifySubs(Event.RemoveTank, tank);
                 tanks.remove(tank);
             }

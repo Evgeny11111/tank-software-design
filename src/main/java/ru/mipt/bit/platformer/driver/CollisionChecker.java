@@ -59,8 +59,6 @@ public class CollisionChecker implements Observer {
             if (!bulletToMove.isMovementPossible(bullet.getCoordinates(), newPosition) || !bulletToMove.isMovementPossible(bullet.getDestinationCoordinates(), newPosition)) {
                 bullet.setNotExistent();
                 bulletToMove.setNotExistent();
-                //bullets.remove(bullet);
-                //bullets.remove(bulletToMove);
                 return false;
             }
         }
@@ -82,7 +80,6 @@ public class CollisionChecker implements Observer {
         for (Tree tree : trees) {
             if (!bullet.isMovementPossible(tree.getCoordinates(), newPosition)) {
                 bullet.setNotExistent();
-                //bullets.remove(bullet);
                 return false;
             }
         }

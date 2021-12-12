@@ -152,7 +152,6 @@ public class Tank implements ObjectByGame{
     }
 
     public void takeDamage(Bullet bullet) {
-        //System.out.println("Tank " + coordinates.x + " " + coordinates.y + " is getting damage from " + life + " to " + (life - bullet.getDamage()));
         life -= bullet.getDamage();
         if (life == 66) {
             state = new MediumDamagedState(this);

@@ -57,7 +57,6 @@ public class ReaderFromFile implements LevelGenerator {
     }
 
     public void getObjectsFromString(String fileContent) {
-        // предполагается, что в файле нет лишних клеток
         int i = 0;
         char symbol;
         int n = fileContent.length();

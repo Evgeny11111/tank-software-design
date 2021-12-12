@@ -154,7 +154,6 @@ public class LevelRenderer implements Observer {
                 bulletsToGraphics.put((Bullet) objectByGame, new GraphicsBullet(bulletTexture, tileMovement));
                 break;
             case RemoveBullet:
-                System.out.println("before remove bullet " + bulletsToGraphics.entrySet().size());
                 Bullet removable = null;
                 for (var entry : bulletsToGraphics.entrySet()) {
                     if (entry.getKey() == objectByGame) {
@@ -163,16 +162,13 @@ public class LevelRenderer implements Observer {
                     }
                 }
                 if (removable != null) {
-                    System.out.println("after remove bullet " + bulletsToGraphics.entrySet().size());
                     bulletsToGraphics.remove(removable);
                 }
                 break;
             case RemoveTank:
-                System.out.println("before remove tank " + tanksToGraphics.entrySet().size());
                 for (var entry : tanksToGraphics.entrySet()) {
                     if (entry.getKey() == objectByGame) {
                         tanksToGraphics.remove(entry.getKey(), entry.getValue());
-                        System.out.println("after remove tank " + tanksToGraphics.entrySet().size());
                         break;
                     }
                 }
