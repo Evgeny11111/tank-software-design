@@ -8,14 +8,14 @@ import java.util.Objects;
  * Entity
  */
 public class Tree {
-    private final GridPoint2 treeObstacleCoordinates;
+    private final GridPoint2 treeCoordinates;
 
     public Tree(GridPoint2 coordinates) {
-        this.treeObstacleCoordinates = new GridPoint2(coordinates.x, coordinates.y);
+        this.treeCoordinates = new GridPoint2(coordinates.x, coordinates.y);
     }
 
     public GridPoint2 getCoordinates() {
-        return this.treeObstacleCoordinates;
+        return this.treeCoordinates;
     }
 
     @Override
@@ -28,6 +28,6 @@ public class Tree {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(treeObstacleCoordinates);
+        return Objects.hashCode(treeCoordinates);
     }
 }

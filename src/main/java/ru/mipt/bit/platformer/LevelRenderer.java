@@ -13,8 +13,9 @@ import ru.mipt.bit.platformer.objects.graphics.*;
 import ru.mipt.bit.platformer.util.GdxGameUtils;
 import ru.mipt.bit.platformer.util.TileMovement;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT;
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
@@ -32,14 +33,14 @@ public class LevelRenderer implements Observer {
     private final Texture bulletTexture;
     private final Texture healthTexture;
     private final GraphicsObject tankPlayerGraphics;
-    private final HashMap<Tank, GraphicsObject> tanksToGraphics;
-    private final HashMap<Tree, GraphicsTree> treesToGraphics;
-    private final HashMap<Bullet, GraphicsBullet> bulletsToGraphics;
+    private final Map<Tank, GraphicsObject> tanksToGraphics;
+    private final Map<Tree, GraphicsTree> treesToGraphics;
+    private final Map<Bullet, GraphicsBullet> bulletsToGraphics;
 
     private final Tank playerTank;
 
 
-    public LevelRenderer(TiledMap level, TiledMapTileLayer groundLayer, Tank playerTank, ArrayList<Tree> treeObstacles, ArrayList<Tank> tanks) {
+    public LevelRenderer(TiledMap level, TiledMapTileLayer groundLayer, Tank playerTank, List<Tree> trees, List<Tank> tanks) {
         this.batch = new SpriteBatch();
         this.levelRenderer = createSingleLayerMapRenderer(level, batch);
         this.groundLayer = groundLayer;
@@ -51,14 +52,14 @@ public class LevelRenderer implements Observer {
         this.healthTexture = new Texture("images/health.png");
 
         GraphicsTank tankGraphics = new GraphicsTank(blueTankTexture, this.tileMovement);
-        this.tankPlayerGraphics = new GraphicsHealth(tankGraphics, playerTank, healthTexture, this.tileMovement);
+        this.tankPlayerGraphics = new GraphicsHealthAndTank(tankGraphics, playerTank, healthTexture, this.tileMovement);
         this.treesToGraphics = new HashMap<>();
-        for (var tree : treeObstacles)
+        for (Tree tree : trees)
             treesToGraphics.put(tree, new GraphicsTree(greenTreeTexture, this.tileMovement));
         this.tanksToGraphics = new HashMap<>();
-        for (var tank : tanks) {
+        for (Tank tank : tanks) {
             tankGraphics = new GraphicsTank(blueTankTexture, this.tileMovement);
-            tanksToGraphics.put(tank, new GraphicsHealth(tankGraphics, tank, healthTexture, this.tileMovement));
+            tanksToGraphics.put(tank, new GraphicsHealthAndTank(tankGraphics, tank, healthTexture, this.tileMovement));
         }
         this.bulletsToGraphics = new HashMap<>();
 
@@ -71,8 +72,8 @@ public class LevelRenderer implements Observer {
 
     public void moveRectangleAtTileCenter() {
         for (var entry : treesToGraphics.entrySet()) {
-            var tree = entry.getKey();
-            var treeGraphics = entry.getValue();
+            Tree tree = entry.getKey();
+            GraphicsTree treeGraphics = entry.getValue();
             GdxGameUtils.moveRectangleAtTileCenter(groundLayer, treeGraphics.getRectangle(), tree.getCoordinates());
         }
     }
@@ -94,16 +95,16 @@ public class LevelRenderer implements Observer {
 
     void moveTanksRectangle() {
         for (var entry : tanksToGraphics.entrySet()) {
-            var tank = entry.getKey();
-            var tankGraphics = entry.getValue();
+            Tank tank = entry.getKey();
+            GraphicsObject tankGraphics = entry.getValue();
             tankGraphics.moveBetweenTileCenters(tank.getCoordinates(), tank.getDestinationCoordinates(), tank.getMovementProgress());
         }
     }
 
     void moveBulletsRectangle() {
         for (var entry : bulletsToGraphics.entrySet()) {
-            var bullet = entry.getKey();
-            var bulletGraphics = entry.getValue();
+            Bullet bullet = entry.getKey();
+            GraphicsBullet bulletGraphics = entry.getValue();
             bulletGraphics.moveBetweenTileCenters(bullet.getCoordinates(), bullet.getDestinationCoordinates(), bullet.getMovementProgress());
         }
     }

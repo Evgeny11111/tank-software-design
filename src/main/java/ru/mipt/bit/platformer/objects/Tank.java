@@ -152,18 +152,25 @@ public class Tank{
     }
 
     public void takeDamage(Bullet bullet) {
+        state.takeDamage(bullet);
         life -= bullet.getDamage();
-        if (life == 66) {
-            state = new MediumDamagedState(this);
-        } else if (life == 33) {
-            state = new CriticalDamagedState(this);
-        }
-        if (life <= 0)
-            alive = false;
+    }
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public void kill() {
+        alive = false;
     }
 
     public float getMovementSpeed() {
         return movementSpeed;
+    }
+
+    public GridPoint2 getNextCoords() {
+        Direction direction = Direction.Up;
+        return getCoordsByDirection(coordinates, direction.mapFromFloat(rotation));
     }
 
     @Override

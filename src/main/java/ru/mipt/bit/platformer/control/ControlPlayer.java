@@ -10,56 +10,63 @@ import ru.mipt.bit.platformer.control.commands.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static com.badlogic.gdx.Input.Keys.*;
 
 /**
  * Use case
  */
-public class ControlPlayer implements Issuer {
+public class ControlPlayer implements Issuer,Controller {
 
 
-    private final ArrayList<Observer> observers = new ArrayList<>();
-    private long lastTimeChanged =  new Date().getTime();
+    private final List<Observer> observers = new ArrayList<>();
+    private long lastChanged =  new Date().getTime();
 
-    public Command processKey(Tank tank, Level level) {
+    @Override
+    public List<Command> getCommands(List<Tank> tanks, Level level) {
+        Tank tank = tanks.get(0);
+        ArrayList<Command> commands = new ArrayList<>();
         if (Gdx.input.isKeyPressed(UP) || Gdx.input.isKeyPressed(W)) {
-            return new UpCommand(tank);
+            commands.add(new UpCommand(tank));
         }
         else if (Gdx.input.isKeyPressed(LEFT) || Gdx.input.isKeyPressed(A)) {
-            return new LeftCommand(tank);
+            commands.add(new LeftCommand(tank));
         }
         else if (Gdx.input.isKeyPressed(DOWN) || Gdx.input.isKeyPressed(S)) {
-            return new DownCommand(tank);
+            commands.add(new DownCommand(tank));
         }
         else if (Gdx.input.isKeyPressed(RIGHT) || Gdx.input.isKeyPressed(D)) {
-            return new RightCommand(tank);
+            commands.add(new RightCommand(tank));
         }
         else if (Gdx.input.isKeyPressed(SPACE)) {
-            return new ShootCommand(tank, level);
+            commands.add(new ShootCommand(tank, level));
         } else if (Gdx.input.isKeyPressed(L)) {
             long time = new Date().getTime();
-            if (time - lastTimeChanged > 300) {
+            if (time - lastChanged > 300) {
                 notifySubs(Event.ChangeHealth, null);
-                lastTimeChanged = time;
+                lastChanged = time;
             }
+            commands.add(new NoCommand(tank));
+        } else {
+            commands.add(new NoCommand(tank));
         }
-        return new NoCommand(tank);
+        return commands;
     }
 
     @Override
-    public void subscribe(Observer observer) {
+    public void observe(Observer observer) {
         observers.add(observer);
     }
 
     @Override
-    public void unsubscribe(Observer observer) {
+    public void unobserve(Observer observer) {
         observers.remove(observer);
     }
 
     @Override
-    public void notifySubs(Event event, Object objectByGame) {
-        for (Observer obs : observers)
-            obs.update(event, objectByGame);
+    public void notifySubs(Event event, Object object) {
+        for (Observer sub : observers)
+            sub.update(event, object);
     }
 }

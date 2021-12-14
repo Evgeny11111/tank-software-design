@@ -1,6 +1,7 @@
 package ru.mipt.bit.platformer.control;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -14,21 +15,17 @@ public enum Direction {
 
     public Direction getRandomDirection() {
         int num = ThreadLocalRandom.current().nextInt(0, 10000) % 4;
-        switch (num) {
-            case 0:
-                return Up;
-            case 1:
-                return Down;
-            case 2:
-                return Left;
-            case 3:
-                return Right;
-        }
-        return Up;
+        return switch (num) {
+            case 0 -> Up;
+            case 1 -> Down;
+            case 2 -> Left;
+            case 3 -> Right;
+            default -> Up;
+        };
     }
 
-    private HashMap<Direction, Float> createMapperForDirection() {
-        HashMap<Direction, Float> rotates = new HashMap<>();
+    private Map<Direction, Float> createMapperForDirection() {
+        Map<Direction, Float> rotates = new HashMap<>();
         rotates.put(Direction.Up, 90f);
         rotates.put(Direction.Left, -180f);
         rotates.put(Direction.Down, -90f);
@@ -36,8 +33,8 @@ public enum Direction {
         return rotates;
     }
 
-    private HashMap<Float, Direction> createMapperForFloat() {
-        HashMap<Float, Direction> rotates = new HashMap<>();
+    private Map<Float, Direction> createMapperForFloat() {
+        Map<Float, Direction> rotates = new HashMap<>();
         rotates.put(90f, Direction.Up);
         rotates.put(-180f, Direction.Left);
         rotates.put(-90f, Direction.Down);

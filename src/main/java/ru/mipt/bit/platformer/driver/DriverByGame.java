@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import org.awesome.ai.AI;
 import ru.mipt.bit.platformer.AI.AIController;
 import ru.mipt.bit.platformer.LevelRenderer;
+import ru.mipt.bit.platformer.control.Controller;
 import ru.mipt.bit.platformer.objects.Bullet;
 import ru.mipt.bit.platformer.control.commands.Command;
 import ru.mipt.bit.platformer.control.ControlBots;
@@ -14,34 +15,31 @@ import ru.mipt.bit.platformer.objects.Event;
 import ru.mipt.bit.platformer.Observer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapter
  */
 public class DriverByGame implements Observer {
-    private final int width = 10;
-    private final int height = 8;
 
     private final Tank playerTank;
-    private final ArrayList<Tank> tanks;
-    private final ArrayList<Tree> trees;
+    private final List<Tank> tanks;
+    private final List<Tree> trees;
 
-    private final ControlPlayer controlForPlayer;
-    private final ControlBots controlBots;
-    private final AIController AIController;
+    private final Controller controlForPlayer;
+    private final Controller controlForBots;
     private final Level level;
 
-    private final ArrayList<Command> commands;
+    private final List<Command> commands;
 
-    public DriverByGame(Tank playerTank, ArrayList<Tree> trees, ArrayList<Tank> tanks, ArrayList<Bullet> bullets, Level level, AI ai, LevelRenderer levelRenderer) {
-        this.playerTank = playerTank;
-        this.trees = trees;
-        this.tanks = tanks;
+    public DriverByGame(Level level, AI ai, LevelRenderer levelRenderer) {
+        this.playerTank = level.getPlayerTank();
+        this.trees = level.getTreeObstacles();
+        this.tanks = level.getTanks();
 
         this.controlForPlayer = new ControlPlayer();
-        this.controlForPlayer.subscribe(levelRenderer);
-        this.controlBots = new ControlBots();
-        this.AIController = new AIController(ai, playerTank, tanks, trees, width, height);
+        ((ControlPlayer)this.controlForPlayer).observe(levelRenderer);
+        this.controlForBots = new ControlBots();
 
         this.commands = new ArrayList<>();
         this.level = level;
@@ -60,13 +58,13 @@ public class DriverByGame implements Observer {
     }
 
     public void generateCommandsPlayer() {
-        commands.add(controlForPlayer.processKey(playerTank, level));
+        ArrayList<Tank> playerList = new ArrayList<>();
+        playerList.add(playerTank);
+        commands.addAll(controlForPlayer.getCommands(playerList, level));
     }
 
     public void generateCommandsBots() {
-        for (Tank tank : tanks) {
-            commands.add(controlBots.getRandomCommand(tank, level));
-        }
+        commands.addAll(controlForBots.getCommands(tanks, level));
     }
 
     public float getDeltaTime() {
@@ -74,9 +72,9 @@ public class DriverByGame implements Observer {
     }
 
     @Override
-    public void update(Event event, Object objectByGame) {
+    public void update(Event event, Object gameObject) {
         if (event == Event.RemoveTank) {
-            tanks.remove((Tank) objectByGame);
+            tanks.remove((Tank) gameObject);
         }
     }
 }

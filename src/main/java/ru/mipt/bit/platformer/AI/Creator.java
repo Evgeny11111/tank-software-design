@@ -10,16 +10,17 @@ import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.objects.Tree;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Adapter
  */
 public class Creator {
     private final Tank playerTank;
-    private final ArrayList<Tree> trees;
-    private final java.util.ArrayList<Tank> tanks;
+    private final List<Tree> trees;
+    private final List<Tank> tanks;
 
-    public Creator(Tank playerTank, ArrayList<Tree> trees, ArrayList<Tank> tanks) {
+    public Creator(Tank playerTank, List<Tree> trees, List<Tank> tanks) {
         this.playerTank = playerTank;
         this.trees = trees;
         this.tanks = tanks;

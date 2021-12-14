@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Use case
@@ -18,18 +19,20 @@ public class ReaderFromFile implements LevelGenerator {
     private final int width = 10;
     private final int height = 8;
     private Tank playerTank;
-    private final ArrayList<Tank> tanks;
-    private final ArrayList<Tree> trees;
+    private final List<Tank> tanks;
+    private final List<Tree> trees;
+    private final String filePath;
 
     private final CollisionChecker collisionChecker;
 
-    public ReaderFromFile() {
+    public ReaderFromFile(String filePath) {
+        this.filePath = filePath;
         tanks = new ArrayList<>();
         trees = new ArrayList<>();
         collisionChecker = new CollisionChecker();
     }
 
-    public String readFromFileToString(String filePath) {
+    private String readFromFileToString() {
         try {
             Path fileName = Path.of(filePath);
             return Files.readString(fileName);
@@ -43,20 +46,21 @@ public class ReaderFromFile implements LevelGenerator {
         return playerTank;
     }
 
-    public ArrayList<Tank> getTanks() {
+    public List<Tank> getTanks() {
         return tanks;
     }
 
-    public ArrayList<Tree> getTrees() {
+    public List<Tree> getTrees() {
         return trees;
     }
 
-    public void getGameObjectsFromFile(String filePath) {
-        String fileData = readFromFileToString(filePath);
+    private void getGameObjectsFromFile() {
+        String fileData = readFromFileToString();
         getObjectsFromString(fileData);
     }
 
-    public void getObjectsFromString(String fileContent) {
+    private void getObjectsFromString(String fileContent) {
+        // предполагается, что в файле нет лишних клеток
         int i = 0;
         char symbol;
         int n = fileContent.length();
@@ -69,7 +73,7 @@ public class ReaderFromFile implements LevelGenerator {
             } else if (symbol == 'T') {
                 coords = new GridPoint2(x, y);
                 Tree tree = new Tree(coords);
-                collisionChecker.addTreeObstacle(tree);
+                collisionChecker.addTree(tree);
                 trees.add(tree);
                 x += 1;
             } else if (symbol == 'X') {
@@ -93,6 +97,7 @@ public class ReaderFromFile implements LevelGenerator {
 
     @Override
     public Level generateLevel() {
+        getGameObjectsFromFile();
         return new Level(playerTank, trees, tanks);
     }
 }

@@ -3,9 +3,12 @@ package ru.mipt.bit.platformer.AI;
 import org.awesome.ai.AI;
 import org.awesome.ai.Recommendation;
 import org.awesome.ai.state.GameState;
+import ru.mipt.bit.platformer.control.Controller;
+import ru.mipt.bit.platformer.driver.Level;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.objects.Tree;
 import ru.mipt.bit.platformer.control.commands.Command;
+import ru.mipt.bit.platformer.objects.state.State;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,19 +16,20 @@ import java.util.List;
 /**
  * Use case
  */
-public class AIController {
+public class AIController implements Controller {
+
     private final AI ai;
     private GameState gameState;
-    private final ArrayList<Command> tanksCommands;
+    private final List<Command> tanksCommands;
 
     private final Tank playerTank;
-    private final ArrayList<Tank> tanks;
-    private final ArrayList<Tree> trees;
+    private final List<Tank> tanks;
+    private final List<Tree> trees;
 
     private final int width;
     private final int height;
 
-    public AIController(AI ai, Tank playerTank, ArrayList<Tank> tanks, ArrayList<Tree> trees, int width, int height) {
+    public AIController(AI ai, Tank playerTank, List<Tree> trees, List<Tank> tanks, int width, int height) {
         this.ai = ai;
         this.playerTank = playerTank;
         this.trees = trees;
@@ -37,16 +41,10 @@ public class AIController {
         this.tanksCommands = new ArrayList<>();
     }
 
-    public ArrayList<Command> getCommands() {
+    @Override
+    public List<Command> getCommands(List<Tank> tank, Level level) {
         recommendCommands();
         return tanksCommands;
-    }
-
-    public void executeCommands() {
-        recommendCommands();
-        for (Command command : tanksCommands) {
-            command.make();
-        }
     }
 
     public void createGameState() {

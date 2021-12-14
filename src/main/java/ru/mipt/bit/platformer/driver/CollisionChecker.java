@@ -9,6 +9,7 @@ import ru.mipt.bit.platformer.Observer;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -16,12 +17,9 @@ import java.util.ArrayList;
  */
 public class CollisionChecker implements Observer {
 
-    private final int width = 10;
-    private final int height = 8;
-
-    private final ArrayList<Tank> tanks;
-    private final ArrayList<Tree> trees;
-    private final ArrayList<Bullet> bullets;
+    private final List<Tank> tanks;
+    private final List<Tree> trees;
+    private final List<Bullet> bullets;
 
     public CollisionChecker() {
         this.tanks = new ArrayList<>();
@@ -33,12 +31,8 @@ public class CollisionChecker implements Observer {
         tanks.add(tank);
     }
 
-    public void addTreeObstacle(Tree tree) {
+    public void addTree(Tree tree) {
         trees.add(tree);
-    }
-
-    public void addBullet(Bullet bullet) {
-        bullets.add(bullet);
     }
 
     public boolean checkCollisionsWithBullet(GridPoint2 newPosition, Bullet bullet) {
@@ -51,7 +45,7 @@ public class CollisionChecker implements Observer {
     }
 
     public boolean checkAllBullets(GridPoint2 newPosition, Bullet bulletToMove) {
-        for (var bullet : bullets) {
+        for (Bullet bullet : bullets) {
             if (bullet.equals(bulletToMove)) {
                 continue;
             }
@@ -65,7 +59,7 @@ public class CollisionChecker implements Observer {
     }
 
     public boolean checkAllTanksWithBullet(GridPoint2 newPosition, Bullet bullet) {
-        for (var tank : tanks) {
+        for (Tank tank : tanks) {
             if (!tank.equals(bullet.getTank()) && (!bullet.isMovementPossible(tank.getCoordinates(), newPosition) || !bullet.isMovementPossible(tank.getDestinationCoordinates(), newPosition)) ) {
                 bullet.setNotExistent();
                 tank.takeDamage(bullet);
@@ -90,7 +84,7 @@ public class CollisionChecker implements Observer {
     }
 
     public boolean checkAllTanksWithTank(GridPoint2 newPosition, Tank tankToMove) {
-        for (var tank : tanks) {
+        for (Tank tank : tanks) {
             if (tank.equals(tankToMove)) {
                 continue;
             }
@@ -110,20 +104,17 @@ public class CollisionChecker implements Observer {
 
     boolean checkBounds(GridPoint2 newPosition) {
         int x = newPosition.x, y = newPosition.y;
+        int width = 10;
+        int height = 8;
         return (x >= 0 && x < width && y >= 0 && y < height);
     }
 
-    public void update(Event event, Object objectByGame) {
-        switch(event) {
-            case RemoveTank:
-                tanks.remove((Tank) objectByGame);
-                break;
-            case RemoveBullet:
-                bullets.remove((Bullet) objectByGame);
-                break;
-            case AddBullet:
-                bullets.add((Bullet) objectByGame);
-                break;
+    @Override
+    public void update(Event event, Object object) {
+        switch (event) {
+            case RemoveTank -> tanks.remove((Tank) object);
+            case RemoveBullet -> bullets.remove((Bullet) object);
+            case AddBullet -> bullets.add((Bullet) object);
         }
     }
 }

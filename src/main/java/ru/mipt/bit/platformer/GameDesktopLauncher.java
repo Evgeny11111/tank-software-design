@@ -11,14 +11,9 @@ import org.awesome.ai.strategy.NotRecommendingAI;
 import ru.mipt.bit.platformer.driver.DriverByGame;
 import ru.mipt.bit.platformer.driver.Level;
 import ru.mipt.bit.platformer.generators.LevelGenerator;
-import ru.mipt.bit.platformer.objects.Bullet;
 import ru.mipt.bit.platformer.generators.ReaderFromFile;
-import ru.mipt.bit.platformer.generators.ObjectsGenerator;
-import ru.mipt.bit.platformer.objects.Tank;
-import ru.mipt.bit.platformer.objects.Tree;
 import ru.mipt.bit.platformer.util.TileMovement;
 
-import java.util.ArrayList;
 
 import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
 
@@ -31,35 +26,24 @@ public class GameDesktopLauncher implements ApplicationListener {
     private TileMovement tileMovement;
     private LevelRenderer levelRenderer;
 
-    private Tank playerTank;
-    private ArrayList<Tank> tanks;
-    private ArrayList<Tree> trees;
-    private ArrayList<Bullet> bullets;
-
     private DriverByGame driverByGame;
+
     private Level level;
-
-
 
     @Override
     public void create() {
-        LevelGenerator levelGenerator = new ReaderFromFile();
-        ((ReaderFromFile) levelGenerator).getGameObjectsFromFile("src\\main\\resources\\startingSettings\\level.txt");
-        level = levelGenerator.generateLevel();
-        playerTank = level.getPlayerTank();
-        tanks = level.getTanks();
-        trees = level.getTreeObstacles();
-        bullets = level.getBullets();
+        LevelGenerator readerFromFile = new ReaderFromFile("src\\main\\resources\\startingSettings\\level.txt");
+        level = readerFromFile.generateLevel();
 
         levelTiledMap = new TmxMapLoader().load("level.tmx");
         TiledMapTileLayer groundLayer = getSingleLayer(levelTiledMap);
-        levelRenderer = new LevelRenderer(levelTiledMap, groundLayer, playerTank, trees, tanks);
+        levelRenderer = new LevelRenderer(levelTiledMap, groundLayer, level.getPlayerTank(), level.getTreeObstacles(), level.getTanks());
         tileMovement = new TileMovement(groundLayer, Interpolation.smooth);
 
-        driverByGame = new DriverByGame(playerTank, trees, tanks, bullets, level, new NotRecommendingAI(), levelRenderer);
-        level.subscribe(driverByGame);
-        level.subscribe(levelRenderer);
-        level.subscribe(playerTank.getCollisionChecker());
+        driverByGame = new DriverByGame(level, new NotRecommendingAI(), levelRenderer);
+        level.observe(driverByGame);
+        level.observe(levelRenderer);
+        level.observe(level.getPlayerTank().getCollisionChecker());
 
         levelRenderer.moveRectangleAtTileCenter();
     }
