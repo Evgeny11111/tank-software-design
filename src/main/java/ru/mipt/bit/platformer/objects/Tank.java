@@ -4,10 +4,8 @@ import com.badlogic.gdx.math.GridPoint2;
 
 import ru.mipt.bit.platformer.driver.CollisionChecker;
 import ru.mipt.bit.platformer.control.Direction;
-import ru.mipt.bit.platformer.objects.state.MediumDamagedState;
-import ru.mipt.bit.platformer.objects.state.NoDamagedState;
-import ru.mipt.bit.platformer.objects.state.CriticalDamagedState;
-import ru.mipt.bit.platformer.objects.state.State;
+import ru.mipt.bit.platformer.objects.state.NoDamagedTankState;
+import ru.mipt.bit.platformer.objects.state.TankState;
 
 import java.util.Date;
 import java.util.Objects;
@@ -35,7 +33,7 @@ public class Tank{
     private boolean alive;
     private long lastTimeShooting = new Date().getTime();
 
-    private State state;
+    private TankState tankState;
 
     public Tank(GridPoint2 coords, CollisionChecker collisionChecker) {
         this.destinationCoordinates = new GridPoint2(coords);
@@ -45,7 +43,7 @@ public class Tank{
         this.collisionChecker = collisionChecker;
         alive = true;
 
-        this.state = new NoDamagedState(this);
+        this.tankState = new NoDamagedTankState(this);
     }
 
     public boolean isAlive() {
@@ -108,7 +106,7 @@ public class Tank{
     }
 
     public boolean canShoot() {
-        return state.canShoot();
+        return tankState.canShoot();
     }
 
     public boolean isMovementPossible(GridPoint2 obstacleCoordinates, GridPoint2 newPosition) {
@@ -152,12 +150,12 @@ public class Tank{
     }
 
     public void takeDamage(Bullet bullet) {
-        state.takeDamage(bullet);
+        tankState.takeDamage(bullet);
         life -= bullet.getDamage();
     }
 
-    public void setState(State state) {
-        this.state = state;
+    public void setState(TankState tankState) {
+        this.tankState = tankState;
     }
 
     public void kill() {

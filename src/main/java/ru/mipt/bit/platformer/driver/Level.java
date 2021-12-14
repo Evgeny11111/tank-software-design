@@ -14,8 +14,6 @@ import java.util.List;
  * Adapter
  */
 public class Level implements Issuer {
-    private final int width = 10;
-    private final int height = 8;
 
     private final Tank playerTank;
     private final List<Tank> tanks;

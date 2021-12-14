@@ -13,8 +13,6 @@ import static ru.mipt.bit.platformer.util.GdxGameUtils.*;
  * Entity
  */
 public class Bullet{
-    private final float movementSpeed = 0.3f;
-    public final int damage = 33;
     private final GridPoint2 coordinates;
     private GridPoint2 destinationCoordinates;
     private final float rotation;
@@ -56,6 +54,7 @@ public class Bullet{
     }
 
     public int getDamage() {
+        int damage = 33;
         return damage;
     }
 
@@ -78,30 +77,31 @@ public class Bullet{
         return !obstacleCoordinates.equals(newPosition);
     }
 
-    public boolean hasMoved() {
+    private boolean hasMoved() {
         return isEqual(this.movementProgress, 1f);
     }
 
-    public void makeMovement(GridPoint2 newDestinationCoordinates) {
+    private void makeMovement(GridPoint2 newDestinationCoordinates) {
         this.destinationCoordinates = new GridPoint2(newDestinationCoordinates);
         this.movementProgress = 0f;
     }
 
-    public void changeMovementProgress(float deltaTime) {
+    private void changeMovementProgress(float deltaTime) {
+        float movementSpeed = 0.3f;
         this.movementProgress = continueProgress(this.movementProgress, deltaTime, movementSpeed);
     }
 
-    void setCoordinates() {
+    private void setCoordinates() {
         this.coordinates.set(this.destinationCoordinates);
     }
 
-    public void reachDestination() {
+    private void reachDestination() {
         if (this.hasMoved()) {
             this.setCoordinates();
         }
     }
 
-    public GridPoint2 getNextCoords(GridPoint2 coords) {
+    private GridPoint2 getNextCoords(GridPoint2 coords) {
         GridPoint2 newPosition = new GridPoint2(coords);
         switch (direction) {
             case Up:

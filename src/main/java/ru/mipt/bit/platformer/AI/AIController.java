@@ -8,7 +8,6 @@ import ru.mipt.bit.platformer.driver.Level;
 import ru.mipt.bit.platformer.objects.Tank;
 import ru.mipt.bit.platformer.objects.Tree;
 import ru.mipt.bit.platformer.control.commands.Command;
-import ru.mipt.bit.platformer.objects.state.State;
 
 import java.util.ArrayList;
 import java.util.List;
